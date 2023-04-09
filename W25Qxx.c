@@ -23,6 +23,8 @@
  *    
 **/
 
+#include <math.h>
+
 #define W25QXX_GLOBALS
 #include "W25Qxx.h"
 
@@ -283,16 +285,16 @@ void W25Qxx_3ByteMode(void)																																											 		 /* Set
 }
 void W25Qxx_Suspend(void)																																		 						 						 /* Erase/Program suspend (SUS = 0 & BUSY = 1) */
 {
-		/* Erase Suspend instruction use scope       : 1. Erase operation (20h, 52h, D8h, 44h)             (¡Ì)
+		/* Erase Suspend instruction use scope       : 1. Erase operation (20h, 52h, D8h, 44h)             (ï¿½ï¿½)
 		 *        												             2. Erase operation (C7h, 60h)                       (x)
 		 * Commands Supported During Erase Suspend   : 1. Write Status Register instruction (01h)          (x)
 		 *                                             2. Erase instruction (20h, 52h, D8h, C7h, 60h, 44h) (x)
-		 *                                             3. Read instruction (03h, 0Bh, 5Ah, 48h)            (¡Ì)
-     * Program Suspend instruction use scope     : 1. Page Program operation (02h, 42h)                (¡Ì)
-		 *                                             2. Quad Page Program operation (32h)                (¡Ì)
+		 *                                             3. Read instruction (03h, 0Bh, 5Ah, 48h)            (ï¿½ï¿½)
+     * Program Suspend instruction use scope     : 1. Page Program operation (02h, 42h)                (ï¿½ï¿½)
+		 *                                             2. Quad Page Program operation (32h)                (ï¿½ï¿½)
 		 * Commands Supported During Program Suspend : 1. Write Status Register instruction (01h)          (x)
 		 *                                             2. Program instructions (02h, 32h, 42h)             (x)
-		 *                                             3. Read instruction (03h, 0Bh, 5Ah, 48h)            (¡Ì)
+		 *                                             3. Read instruction (03h, 0Bh, 5Ah, 48h)            (ï¿½ï¿½)
 		 **/
 
     /* CS enable */
@@ -740,7 +742,7 @@ uint8_t W25Qxx_ReadStatus(void)																																											 /* Re
 		ret |= W25Qxx_RBit_BUSY();
 		ret |= W25Qxx_RBit_SUS()<<1;
 
-		return (2 ^ ret);
+		return (uint8_t) pow(2, ret);
 }
 /*---------------------------------------------------------------------------------------------------------------------*/
 /*                                The following functions include error check judgment      					      				   */
