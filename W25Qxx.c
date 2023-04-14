@@ -299,9 +299,15 @@ void W25Qxx_Suspend(void)																							 		/* Erase/Program suspend (SUS
 	 * Commands Supported During Program Suspend : 1. Write Status Register instruction (01h)          (x)
 	 *                                             2. Program instructions (02h, 32h, 42h)             (x)
 	 *                                             3. Read instruction (03h, 0Bh, 5Ah, 48h)            (¡Ì)
+<<<<<<< HEAD
+	**/
+
+	/* CS enable */
+=======
 	 **/
 
 	 /* CS enable */
+>>>>>>> 2c58ac6170ef450bca98b8863018248f6d0a441b
 	W25Qxx.port.spi_cs_L();
 
 	/* erase data */
@@ -1390,10 +1396,17 @@ void W25Qxx_Read_SFDP(uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToRea
 void W25Qxx_DIR_Program_Page(uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToWrite, W25Qxx_ERR *err)  				/* No check Direct program Page   (0-256), Notes : no beyond page address */
 {
 	/* No check Direct Page write
+<<<<<<< HEAD
+	 * 1. Write data of the specified length at the specified address,
+	 *    but ensure that the data is in the same page.
+	 * 2. You must ensure that all data within the written address range is 0xFF,
+	 *    otherwise the data written at a location other than 0xFF will fail.
+=======
 	   * 1. Write data of the specified length at the specified address,
 	   *    but ensure that the data is in the same page.
 	   * 2. You must ensure that all data within the written address range is 0xFF,
 	   *    otherwise the data written at a location other than 0xFF will fail.
+>>>>>>> 2c58ac6170ef450bca98b8863018248f6d0a441b
 	**/
 	uint16_t i = 0;
 	uint16_t remPage = 0;
@@ -1410,7 +1423,11 @@ void W25Qxx_DIR_Program_Page(uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumBy
 	if (*err != W25Qxx_ERR_NONE) return;
 
 	/* Determine if the address > remainPage
+<<<<<<< HEAD
+	 * (Notes : remainPage maxsize = 256) */
+=======
 		 * (Notes : remainPage maxsize = 256) */
+>>>>>>> 2c58ac6170ef450bca98b8863018248f6d0a441b
 	remPage = W25Qxx_PAGESIZE - (ByteAddr & (W25Qxx_PAGESIZE - 1));		/* remPage = W25Qxx_PAGESIZE - ByteAddr % W25Qxx_PAGESIZE; */
 	if (NumByteToWrite > remPage)
 	{
@@ -1517,10 +1534,17 @@ void W25Qxx_DIR_Program(uint8_t *pBuffer, uint32_t ByteAddr, uint32_t NumByteToW
 void W25Qxx_DIR_Program_Security(uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToWrite, W25Qxx_ERR *err)  		 	/* No check Direct program Security (0-256), Notes : no beyond page address */
 {
 	/* Security Area : No check Direct Page write
+<<<<<<< HEAD
+	 * 1. Write data of the specified length at the specified address,
+	 *    but ensure that the data is in the same page.
+	 * 2. You must ensure that all data within the written address range is 0xFF,
+	 *    otherwise the data written at a location other than 0xFF will fail.
+=======
 	   * 1. Write data of the specified length at the specified address,
 	   *    but ensure that the data is in the same page.
 	   * 2. You must ensure that all data within the written address range is 0xFF,
 	   *    otherwise the data written at a location other than 0xFF will fail.
+>>>>>>> 2c58ac6170ef450bca98b8863018248f6d0a441b
 	**/
 	uint16_t numPage = 0;
 	uint32_t startAddr = 0;
@@ -1605,7 +1629,11 @@ void W25Qxx_Program(uint8_t *pBuffer, uint32_t ByteAddr, uint32_t NumByteToWrite
 	}
 
 	/* First Sector remain bytes */
+<<<<<<< HEAD
+	numSec = ByteAddr >> W25Qxx_SECTORPOWER; 		/* calculate sector number address ( numSec = ByteAddr / W25Qxx_SECTORSIZE; ) */
+=======
 	numSec = ByteAddr >> W25Qxx_SECTORPOWER; 			/* calculate sector number address ( numSec = ByteAddr / W25Qxx_SECTORSIZE; ) */
+>>>>>>> 2c58ac6170ef450bca98b8863018248f6d0a441b
 	offSec = ByteAddr & (W25Qxx_SECTORSIZE - 1); 	/* calculate sector offset address ( offSec = ByteAddr % W25Qxx_SECTORSIZE; ) */
 	remSec = W25Qxx_SECTORSIZE - offSec;
 	if (NumByteToWrite <= remSec) remSec = NumByteToWrite;
@@ -1642,15 +1670,24 @@ void W25Qxx_Program(uint8_t *pBuffer, uint32_t ByteAddr, uint32_t NumByteToWrite
 			W25Qxx_DIR_Program(W25QXX_CACHE, numSec * W25Qxx_SECTORSIZE, W25Qxx_SECTORSIZE, err);
 			if (*err != W25Qxx_ERR_NONE) return;
 		}
+<<<<<<< HEAD
+		else							/* no need to be erased */
+=======
 		else										/* no need to be erased */
+>>>>>>> 2c58ac6170ef450bca98b8863018248f6d0a441b
 		{
 			/* Directly write the remaining section of the sector */
 			W25Qxx_DIR_Program(pBuffer, ByteAddr, remSec, err);
 			if (*err != W25Qxx_ERR_NONE) return;
 		}
 
+<<<<<<< HEAD
+		numSec++;						/* updata sector address */
+		offSec = 0;						/* reset  sector offset  */
+=======
 		numSec++;								/* updata sector address */
 		offSec = 0;							/* reset  sector offset  */
+>>>>>>> 2c58ac6170ef450bca98b8863018248f6d0a441b
 
 		/*------------------------------- Update next parameters --------------------------------*/
 
@@ -1735,7 +1772,11 @@ void W25Qxx_Program_Security(uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumBy
 		W25Qxx_DIR_Program_Security(W25QXX_CACHE, numPage * 0x00001000, W25Qxx_PAGESIZE, err);
 		if (*err != W25Qxx_ERR_NONE) return;
 	}
+<<<<<<< HEAD
+	else						/* no need to be erased */
+=======
 	else									/* no need to be erased */
+>>>>>>> 2c58ac6170ef450bca98b8863018248f6d0a441b
 	{
 		/* Ensure that the written data is in the same page, directly write the remaining section of the page */
 		W25Qxx_DIR_Program_Security(pBuffer, ByteAddr, remPage, err);
