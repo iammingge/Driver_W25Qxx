@@ -23,6 +23,9 @@
  *   04-14-2023        iammingge      			1. modify the function W25Qxx_ReadStatus "2^ret" -> "1<<ret"
  *											    2. align code 4 bytes
  *											    3. support 4 address mode
+ *   05-01-2023        iammingge                1. Fix function W25Qxx_ Reset timing error, resulting in invalid device restart
+ *                                              2. Add W25Qxx status register to restore factory parameter function W25Qxx_ SetFactory_ WriteStatusRegister
+ *                                              3. Support for multiple device mounting
  *
 **/
 
@@ -241,94 +244,94 @@ typedef struct
 /**
  * @brief W25Qxx Read Manufacturer/JEDEC/Unique ID
  */
-uint16_t W25Qxx_ID_Manufacturer(void);
-uint32_t W25Qxx_ID_JEDEC(void);
-uint64_t W25Qxx_ID_Unique(void);
+uint16_t W25Qxx_ID_Manufacturer(W25Qxx_t *dev);
+uint32_t W25Qxx_ID_JEDEC(W25Qxx_t *dev);
+uint64_t W25Qxx_ID_Unique(W25Qxx_t *dev);
 
 /**
  * @brief W25Qxx Individual Control Instruction
  */
-void W25Qxx_Reset(void);
-void W25Qxx_PowerEnable(void);
-void W25Qxx_PowerDisable(void);
-void W25Qxx_VolatileSR_WriteEnable(void);
-void W25Qxx_WriteEnable(void);
-void W25Qxx_WriteDisable(void);
-void W25Qxx_4ByteMode(void);
-void W25Qxx_3ByteMode(void);
-void W25Qxx_Suspend(void);
-void W25Qxx_Resume(void);
+void W25Qxx_Reset(W25Qxx_t *dev);
+void W25Qxx_PowerEnable(W25Qxx_t *dev);
+void W25Qxx_PowerDisable(W25Qxx_t *dev);
+void W25Qxx_VolatileSR_WriteEnable(W25Qxx_t *dev);
+void W25Qxx_WriteEnable(W25Qxx_t *dev);
+void W25Qxx_WriteDisable(W25Qxx_t *dev);
+void W25Qxx_4ByteMode(W25Qxx_t *dev);
+void W25Qxx_3ByteMode(W25Qxx_t *dev);
+void W25Qxx_Suspend(W25Qxx_t *dev);
+void W25Qxx_Resume(W25Qxx_t *dev);
 
 /**
  * @brief W25Qxx Read sector/block lock of current address status
  */
-uint8_t W25Qxx_ReadLock(uint32_t ByteAddr);
+uint8_t W25Qxx_ReadLock(W25Qxx_t *dev, uint32_t ByteAddr);
 
 /**
  * @brief W25Qxx Read/Write ExtendedRegister
  */
-void W25Qxx_ReadExtendedRegister(void);
-void W25Qxx_WriteExtendedRegister(uint8_t ExtendedAddr);
+void W25Qxx_ReadExtendedRegister(W25Qxx_t *dev);
+void W25Qxx_WriteExtendedRegister(W25Qxx_t *dev, uint8_t ExtendedAddr);
 
 /**
  * @brief W25Qxx Read/Write StatusRegister
  */
-void W25Qxx_ReadStatusRegister(uint8_t Select_SR_1_2_3);
-void W25Qxx_WriteStatusRegister(uint8_t Select_SR_1_2_3, uint8_t Data);
-void W25Qxx_VolatileSR_WriteStatusRegister(uint8_t Select_SR_1_2_3, uint8_t Data);
-uint8_t W25Qxx_RBit_WEL(void);
-uint8_t W25Qxx_RBit_BUSY(void);
-uint8_t W25Qxx_RBit_SUS(void);
-uint8_t W25Qxx_RBit_ADS(void);
-void W25Qxx_WBit_SRP(W25Qxx_SRM srm, uint8_t bit);
-void W25Qxx_WBit_TB(W25Qxx_SRM srm, uint8_t bit);
-void W25Qxx_WBit_CMP(W25Qxx_SRM srm, uint8_t bit);
-void W25Qxx_WBit_QE(W25Qxx_SRM srm, uint8_t bit);
-void W25Qxx_WBit_SRL(W25Qxx_SRM srm, uint8_t bit);
-void W25Qxx_WBit_WPS(W25Qxx_SRM srm, uint8_t bit);
-void W25Qxx_WBit_DRV(W25Qxx_SRM srm, uint8_t bit);
-void W25Qxx_WBit_BP(W25Qxx_SRM srm, uint8_t bit);
-void W25Qxx_WBit_LB(W25Qxx_SRM srm, uint8_t bit);
-void W25Qxx_WBit_ADP(uint8_t bit);
-uint8_t W25Qxx_ReadStatus(void);
+void W25Qxx_ReadStatusRegister(W25Qxx_t *dev, uint8_t Select_SR_1_2_3);
+void W25Qxx_WriteStatusRegister(W25Qxx_t *dev, uint8_t Select_SR_1_2_3, uint8_t Data);
+void W25Qxx_VolatileSR_WriteStatusRegister(W25Qxx_t *dev, uint8_t Select_SR_1_2_3, uint8_t Data);
+void W25Qxx_SetFactory_WriteStatusRegister(W25Qxx_t *dev);
+uint8_t W25Qxx_RBit_WEL(W25Qxx_t *dev);
+uint8_t W25Qxx_RBit_BUSY(W25Qxx_t *dev);
+uint8_t W25Qxx_RBit_SUS(W25Qxx_t *dev);
+uint8_t W25Qxx_RBit_ADS(W25Qxx_t *dev);
+void W25Qxx_WBit_SRP(W25Qxx_t *dev, W25Qxx_SRM srm, uint8_t bit);
+void W25Qxx_WBit_TB(W25Qxx_t *dev, W25Qxx_SRM srm, uint8_t bit);
+void W25Qxx_WBit_CMP(W25Qxx_t *dev, W25Qxx_SRM srm, uint8_t bit);
+void W25Qxx_WBit_QE(W25Qxx_t *dev, W25Qxx_SRM srm, uint8_t bit);
+void W25Qxx_WBit_SRL(W25Qxx_t *dev, W25Qxx_SRM srm, uint8_t bit);
+void W25Qxx_WBit_WPS(W25Qxx_t *dev, W25Qxx_SRM srm, uint8_t bit);
+void W25Qxx_WBit_DRV(W25Qxx_t *dev, W25Qxx_SRM srm, uint8_t bit);
+void W25Qxx_WBit_BP(W25Qxx_t *dev, W25Qxx_SRM srm, uint8_t bit);
+void W25Qxx_WBit_LB(W25Qxx_t *dev, W25Qxx_SRM srm, uint8_t bit);
+void W25Qxx_WBit_ADP(W25Qxx_t *dev, uint8_t bit);
+uint8_t W25Qxx_ReadStatus(W25Qxx_t *dev);
 
 /**
  * @brief W25Qxx read current status
  */
-void W25Qxx_isStatus(uint8_t Select_Status, uint32_t timeout, W25Qxx_ERR *err);
+void W25Qxx_isStatus(W25Qxx_t *dev, uint8_t Select_Status, uint32_t timeout, W25Qxx_ERR *err);
 
 /**
  * @brief W25Qxx Sector/Blcok Lock protect for " WPS = 1 "
  */
-void W25Qxx_Global_UnLock(W25Qxx_ERR *err);
-void W25Qxx_Global_Locked(W25Qxx_ERR *err);
-void W25Qxx_Individual_UnLock(uint32_t ByteAddr, W25Qxx_ERR *err);
-void W25Qxx_Individual_Locked(uint32_t ByteAddr, W25Qxx_ERR *err);
+void W25Qxx_Global_UnLock(W25Qxx_t *dev, W25Qxx_ERR *err);
+void W25Qxx_Global_Locked(W25Qxx_t *dev, W25Qxx_ERR *err);
+void W25Qxx_Individual_UnLock(W25Qxx_t *dev, uint32_t ByteAddr, W25Qxx_ERR *err);
+void W25Qxx_Individual_Locked(W25Qxx_t *dev, uint32_t ByteAddr, W25Qxx_ERR *err);
 
 /**
  * @brief W25Qxx Main/SFDP/Security Storage read/program/erase function
  */
-void W25Qxx_Erase_Chip(W25Qxx_ERR *err);
-void W25Qxx_Erase_Block64(uint32_t Block64Addr, W25Qxx_ERR *err);
-void W25Qxx_Erase_Block32(uint32_t Block32Addr, W25Qxx_ERR *err);
-void W25Qxx_Erase_Sector(uint32_t SectorAddr, W25Qxx_ERR *err);
-void W25Qxx_Erase_Security(uint32_t SectorAddr, W25Qxx_ERR *err);
-void W25Qxx_Read(uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToRead, W25Qxx_ERR *err);
-void W25Qxx_Read_Security(uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToRead, W25Qxx_ERR *err);
-void W25Qxx_Read_SFDP(uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToRead, W25Qxx_ERR *err);
-void W25Qxx_DIR_Program_Page(uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToWrite, W25Qxx_ERR *err);
-void W25Qxx_DIR_Program(uint8_t *pBuffer, uint32_t ByteAddr, uint32_t NumByteToWrite, W25Qxx_ERR *err);
-void W25Qxx_DIR_Program_Security(uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToWrite, W25Qxx_ERR *err);
-void W25Qxx_Program(uint8_t *pBuffer, uint32_t ByteAddr, uint32_t NumByteToWrite, W25Qxx_ERR *err);
-void W25Qxx_Program_Security(uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToWrite, W25Qxx_ERR *err);
+void W25Qxx_Erase_Chip(W25Qxx_t *dev, W25Qxx_ERR *err);
+void W25Qxx_Erase_Block64(W25Qxx_t *dev, uint32_t Block64Addr, W25Qxx_ERR *err);
+void W25Qxx_Erase_Block32(W25Qxx_t *dev, uint32_t Block32Addr, W25Qxx_ERR *err);
+void W25Qxx_Erase_Sector(W25Qxx_t *dev, uint32_t SectorAddr, W25Qxx_ERR *err);
+void W25Qxx_Erase_Security(W25Qxx_t *dev, uint32_t SectorAddr, W25Qxx_ERR *err);
+void W25Qxx_Read(W25Qxx_t *dev, uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToRead, W25Qxx_ERR *err);
+void W25Qxx_Read_Security(W25Qxx_t *dev, uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToRead, W25Qxx_ERR *err);
+void W25Qxx_Read_SFDP(W25Qxx_t *dev, uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToRead, W25Qxx_ERR *err);
+void W25Qxx_DIR_Program_Page(W25Qxx_t *dev, uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToWrite, W25Qxx_ERR *err);
+void W25Qxx_DIR_Program(W25Qxx_t *dev, uint8_t *pBuffer, uint32_t ByteAddr, uint32_t NumByteToWrite, W25Qxx_ERR *err);
+void W25Qxx_DIR_Program_Security(W25Qxx_t *dev, uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToWrite, W25Qxx_ERR *err);
+void W25Qxx_Program(W25Qxx_t *dev, uint8_t *pBuffer, uint32_t ByteAddr, uint32_t NumByteToWrite, W25Qxx_ERR *err);
+void W25Qxx_Program_Security(W25Qxx_t *dev, uint8_t *pBuffer, uint32_t ByteAddr, uint16_t NumByteToWrite, W25Qxx_ERR *err);
 
 /**
-* @brief W25Qxx config function
-*/
-W25QXX_EXT W25Qxx_t W25Qxx;
-void W25Qxx_QueryChip(W25Qxx_ERR *err);
-void W25Qxx_config(W25Qxx_ERR *err);
-void W25Qxx_SusResum_Erase_Sector(uint32_t SectorAddr, W25Qxx_ERR *err);
+ * @brief W25Qxx config function
+ */
+void W25Qxx_QueryChip(W25Qxx_t *dev, W25Qxx_ERR *err);
+void W25Qxx_config(W25Qxx_t *dev, W25Qxx_ERR *err);
+void W25Qxx_SusResum_Erase_Sector(W25Qxx_t *dev, uint32_t SectorAddr, W25Qxx_ERR *err);
 
 #ifdef __cplusplus
 }
