@@ -299,16 +299,16 @@ void W25Qxx_3ByteMode(W25Qxx_t *dev)																								/* Set 3 bytes addre
 }
 void W25Qxx_Suspend(W25Qxx_t *dev)																							 		/* Erase/Program suspend (SUS = 0 & BUSY = 1) */
 {
-    /* Erase Suspend instruction use scope       : 1. Erase operation (20h, 52h, D8h, 44h)             (¡Ì)
-     * 											   2. Erase operation (C7h, 60h)                       (x)
-     * Commands Supported During Erase Suspend   : 1. Write Status Register instruction (01h)          (x)
-     *                                             2. Erase instruction (20h, 52h, D8h, C7h, 60h, 44h) (x)
-     *                                             3. Read instruction (03h, 0Bh, 5Ah, 48h)            (¡Ì)
-     * Program Suspend instruction use scope     : 1. Page Program operation (02h, 42h)                (¡Ì)
-     *                                             2. Quad Page Program operation (32h)                (¡Ì)
-     * Commands Supported During Program Suspend : 1. Write Status Register instruction (01h)          (x)
-     *                                             2. Program instructions (02h, 32h, 42h)             (x)
-     *                                             3. Read instruction (03h, 0Bh, 5Ah, 48h)            (¡Ì)
+    /* Erase Suspend instruction use scope       : 1. Erase operation (20h, 52h, D8h, 44h)             (Y)
+     * 											   2. Erase operation (C7h, 60h)                       (N)
+     * Commands Supported During Erase Suspend   : 1. Write Status Register instruction (01h)          (N)
+     *                                             2. Erase instruction (20h, 52h, D8h, C7h, 60h, 44h) (N)
+     *                                             3. Read instruction (03h, 0Bh, 5Ah, 48h)            (Y)
+     * Program Suspend instruction use scope     : 1. Page Program operation (02h, 42h)                (Y)
+     *                                             2. Quad Page Program operation (32h)                (Y)
+     * Commands Supported During Program Suspend : 1. Write Status Register instruction (01h)          (N)
+     *                                             2. Program instructions (02h, 32h, 42h)             (N)
+     *                                             3. Read instruction (03h, 0Bh, 5Ah, 48h)            (Y)
     **/
 
     /* CS enable */
