@@ -52,9 +52,9 @@ extern "C" {
  *
  * 				Number of supported device mounts (1)
  *
- * 				Standard SPI  (¡Ì)      3ByteAddress (¡Ì)
- * 				Dual     SPI  (x)      4ByteAddress (¡Ì)
- * 				Quad     SPI  (x)
+ * 				Standard SPI  (Y)      3ByteAddress (Y)
+ * 				Dual     SPI  (N)      4ByteAddress (Y)
+ * 				Quad     SPI  (N)
  * Note: 
  * 1. 3 address mode and 4 address mode are not supported to switch between each 
  *    other when the program is running, this version uses the macro to select the 
